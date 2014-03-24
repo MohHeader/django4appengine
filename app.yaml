@@ -1,0 +1,37 @@
+application: app-id
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: no
+
+libraries:
+- name: django
+  version: "1.4"
+- name: lxml
+  version: "2.3"
+
+env_variables:
+  DJANGO_SETTINGS_MODULE: 'project.settings'
+
+handlers:
+- url: /update_candidates_results
+  script: project/cron.py
+  login: admin
+
+- url: /static
+  static_dir: static
+
+- url: /sitemap.xml
+  static_files: static/sitemap.xml
+  upload: static/sitemap.xml
+
+- url: /robots.txt
+  static_files: static/robots.txt
+  upload: static/robots.txt
+
+- url: /admin/.*
+  script: main.py
+  login: admin
+
+- url: /.*
+  script: main.py
