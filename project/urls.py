@@ -8,4 +8,5 @@ urlpatterns = patterns('',
 
     # Password Protected Staging Server
     (r'^password_required/$', 'libs.password_required.views.login'),
+    url(r'^robots.txt$', 'project.views.robots'),
 )
