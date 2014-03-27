@@ -15,6 +15,17 @@ def stagingServer(request):
     else:
         return False
 
+def friendClient(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    if ip in settings.FRIENDS_IPS:
+        return True
+    else:
+        return False
+
 def password_required(view_func=None, redirect_field_name=REDIRECT_FIELD_NAME):
     """
     Decorator for views that checks that the user has entered the password,
@@ -23,7 +34,10 @@ def password_required(view_func=None, redirect_field_name=REDIRECT_FIELD_NAME):
     def _wrapped_view(request, *args, **kwargs):
         if not stagingServer(request):
             return view_func(request, *args, **kwargs)
-        elif request.session.get('password_required_auth', False):
+        else:
+            if friendClient(request):
+                return view_func(request, *args, **kwargs)
+            elif request.session.get('password_required_auth', False):
                 return view_func(request, *args, **kwargs)
 
         return HttpResponseRedirect('%s?%s=%s' % (

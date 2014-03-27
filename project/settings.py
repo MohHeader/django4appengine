@@ -3,6 +3,7 @@
 PASSWORD_REQUIRED_PASSWORD = 'password'
 STAGING_SERVER_URLS = ('app-id-staging.appspot.com','localhost:8080')
 PRODUCTION_SERVER_URLS = ('app-id.appspot.com')
+FRIENDS_IPS = ['196.218.219.102']
 
 import os
 PROJECT_PATH = os.path.split(os.path.abspath(os.path.dirname(__file__)))[0]
